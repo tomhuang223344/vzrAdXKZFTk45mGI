@@ -151,6 +151,11 @@
             box-shadow: 0 4px 8px rgba(156, 39, 176, 0.4);
         }
         
+        .btn-filter.active {
+            background: linear-gradient(90deg, #7b1fa2 0%, #512da8 100%);
+            box-shadow: 0 2px 5px rgba(123, 31, 162, 0.5);
+        }
+        
         .btn-hidden {
             display: none !important;
         }
@@ -163,12 +168,23 @@
             min-height: 0;
             overflow: hidden;
             font-size: 0.9rem;
+            position: relative;
         }
         
         .sheet-selector {
             display: flex;
             align-items: center;
             gap: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .sheet-selector label {
+            color: #333;
+            font-weight: 500;
+            white-space: nowrap;
         }
         
         .sheet-selector select {
@@ -177,11 +193,17 @@
             border: 1px solid #ddd;
             background-color: white;
             outline: none;
-            min-width: 120px;
+            min-width: 150px;
             font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .sheet-selector select:hover {
+            border-color: #4b6cb7;
         }
         
         .sheet-selector select:focus {
+            border-color: #4b6cb7;
             box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
         }
         
@@ -218,19 +240,19 @@
             top: 0;
             user-select: none;
             white-space: nowrap;
-            z-index: 20; /* 增加表頭的 z-index */
+            z-index: 30;
             font-size: 0.9rem;
             overflow: hidden;
             text-overflow: ellipsis;
             border: 1px solid #3a5ca9;
         }
         
-        /* 选择框列 - 第1欄固定 */
+        /* 選擇框列 - 第1欄固定 */
         th:first-child,
         td:first-child {
             position: sticky;
             left: 0;
-            z-index: 25; /* 增加第一固定列的 z-index */
+            z-index: 35;
             background-color: #3a5ca9;
             width: 50px;
             min-width: 50px;
@@ -240,38 +262,78 @@
             text-align: center;
         }
         
-        td:first-child {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            text-align: center;
-            z-index: 15; /* 数据行的第一固定列 z-index 较低 */
-        }
-        
-        /* 第2欄固定 */
+        /* 第2欄固定 - 品牌型號欄 */
         th:nth-child(2),
         td:nth-child(2) {
             position: sticky;
             left: 50px;
-            z-index: 24; /* 增加第二固定列的 z-index */
+            z-index: 34;
             background-color: #4b6cb7;
-            width: 180px;
             min-width: 180px;
             max-width: 180px;
             padding: 8px 12px;
             border-right: 2px solid #3a5ca9;
             text-align: center;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        
+        /* 第3欄固定 - CPU欄 */
+        th:nth-child(3),
+        td:nth-child(3) {
+            position: sticky;
+            left: 230px;
+            z-index: 33;
+            background-color: #4b6cb7;
+            min-width: 120px;
+            max-width: 120px;
+            padding: 8px 12px;
+            border-right: 2px solid #3a5ca9;
+            text-align: center;
+        }
+        
+        /* 第4欄固定 - GPU欄 */
+        th:nth-child(4),
+        td:nth-child(4) {
+            position: sticky;
+            left: 350px;
+            z-index: 32;
+            background-color: #4b6cb7;
+            min-width: 100px;
+            max-width: 100px;
+            padding: 8px 12px;
+            border-right: 2px solid #3a5ca9;
+            text-align: center;
+        }
+        
+        /* 數據行的固定列背景色 */
+        td:first-child {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            z-index: 25;
         }
         
         td:nth-child(2) {
             background-color: white;
             border: 1px solid #e0e0e0;
-            text-align: center;
-            z-index: 14; /* 数据行的第二固定列 z-index 较低 */
+            text-align: left;
+            z-index: 24;
+            white-space: normal;
+            word-wrap: break-word;
         }
         
-        /* 其他欄位 */
-        th:not(:first-child):not(:nth-child(2)),
-        td:not(:first-child):not(:nth-child(2)) {
+        td:nth-child(3),
+        td:nth-child(4) {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            z-index: 23;
+        }
+        
+        /* 其他欄位 - 不固定，可水平滾動 */
+        th:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)),
+        td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) {
             padding: 8px 12px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -280,7 +342,7 @@
             max-width: 300px;
         }
         
-        /* 斑馬紋效果 */
+        /* 斑馬紋效果 - 確保固定列也有斑馬紋 */
         tr:nth-child(even) td:first-child {
             background-color: #f8faff;
         }
@@ -289,20 +351,47 @@
             background-color: #f8faff;
         }
         
-        tr:nth-child(even) td {
+        tr:nth-child(even) td:nth-child(3) {
             background-color: #f8faff;
         }
         
+        tr:nth-child(even) td:nth-child(4) {
+            background-color: #f8faff;
+        }
+        
+        tr:nth-child(even) td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) {
+            background-color: #f8faff;
+        }
+        
+        /* 懸停效果 - 確保固定列也有懸停效果 */
         tr:hover td:first-child {
-            background-color: #eef2ff;
+            background-color: #eef2ff !important;
         }
         
         tr:hover td:nth-child(2) {
-            background-color: #eef2ff;
+            background-color: #eef2ff !important;
         }
         
-        tr:hover td {
-            background-color: #eef2ff;
+        tr:hover td:nth-child(3) {
+            background-color: #eef2ff !important;
+        }
+        
+        tr:hover td:nth-child(4) {
+            background-color: #eef2ff !important;
+        }
+        
+        tr:hover td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) {
+            background-color: #eef2ff !important;
+        }
+        
+        /* 表頭懸停效果 */
+        th:hover {
+            background-color: #3a5ca9;
+        }
+        
+        /* 選擇框列表頭特殊顏色 */
+        th:first-child:hover {
+            background-color: #2a4c99;
         }
         
         /* 选择框样式 */
@@ -314,19 +403,6 @@
         }
         
         /* 排序样式 */
-        th.sortable {
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 40px;
-        }
-        
-        th.sortable:hover {
-            background-color: #3a5ca9;
-        }
-        
         .header-content {
             display: flex;
             align-items: center;
@@ -350,6 +426,7 @@
             border-right: 5px solid transparent;
             opacity: 0.5;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .sort-icon.sort-up {
@@ -468,7 +545,7 @@
             opacity: 1;
         }
 
-        /* 篩選面板樣式 */
+        /* 優化後的篩選面板樣式 */
         .filter-panel {
             background: #f8f9fa;
             border-bottom: 1px solid #e0e0e0;
@@ -476,11 +553,20 @@
             display: none;
             flex-shrink: 0;
             transition: all 0.3s ease;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .filter-panel.show {
+            display: block;
         }
 
         .filter-section {
             margin-bottom: 15px;
             transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            background: white;
         }
 
         .filter-section:last-child {
@@ -491,8 +577,15 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
+            padding: 10px 15px;
             cursor: pointer;
+            background: #f1f3f5;
+            border-radius: 6px 6px 0 0;
+            transition: background-color 0.2s;
+        }
+
+        .filter-header:hover {
+            background: #e9ecef;
         }
 
         .filter-title {
@@ -523,11 +616,12 @@
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            max-height: 80px;
+            max-height: 150px;
             overflow-y: auto;
-            padding: 5px;
-            margin-left: 80px;
+            padding: 15px;
             transition: all 0.3s ease;
+            background: white;
+            border-radius: 0 0 6px 6px;
         }
 
         .filter-option {
@@ -536,13 +630,28 @@
             gap: 6px;
             font-size: 0.85rem;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 4px;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
         }
 
         .filter-option:hover {
             background-color: #e9ecef;
+            border-color: #ced4da;
+            transform: translateY(-1px);
+        }
+
+        .filter-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f1f3f5;
+        }
+
+        .filter-option.disabled:hover {
+            transform: none;
+            background: #f1f3f5;
         }
 
         .filter-checkbox {
@@ -552,13 +661,24 @@
             accent-color: #4b6cb7;
         }
 
+        .filter-checkbox:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
         .filter-count {
             font-size: 0.7rem;
             color: #6c757d;
             background: #e9ecef;
             padding: 1px 6px;
             border-radius: 10px;
-            margin-left: 4px;
             min-width: 20px;
             text-align: center;
             display: inline-block;
@@ -570,21 +690,28 @@
             margin-top: 15px;
             padding-top: 10px;
             border-top: 1px solid #dee2e6;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
             background: #6c757d;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            font-weight: 500;
         }
 
         .filter-btn:hover {
             background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .filter-btn:active {
+            transform: translateY(0);
         }
 
         .filter-btn.apply {
@@ -595,13 +722,158 @@
             background: #218838;
         }
 
+        .filter-btn.clear {
+            background: #dc3545;
+        }
+
+        .filter-btn.clear:hover {
+            background: #c82333;
+        }
+
+        .filter-btn.clear-all {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .filter-btn.clear-all:hover {
+            background: #e0a800;
+        }
+
+        .filter-status {
+            font-size: 0.85rem;
+            color: #28a745;
+            margin-left: 10px;
+            display: inline-block;
+        }
+
+        .filter-status.active {
+            color: #28a745;
+        }
+
         .no-filter-data {
             color: #6c757d;
             font-style: italic;
-            margin-left: 80px;
+            padding: 15px;
             font-size: 0.85rem;
+            background: white;
+            border-radius: 0 0 6px 6px;
         }
 
+        /* 搜尋框樣式 */
+        .filter-search {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin: 10px 15px;
+            width: calc(100% - 30px);
+        }
+
+        .filter-search:focus {
+            outline: none;
+            border-color: #4b6cb7;
+            box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
+        }
+
+        /* 選中計數器 */
+        .filter-selected-count {
+            font-size: 0.8rem;
+            color: #4b6cb7;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+
+        /* 批量選擇按鈕 */
+        .batch-select-buttons {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+
+        .batch-select-buttons button {
+            background: white;
+            border: 1px solid #4b6cb7;
+            color: #4b6cb7;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .batch-select-buttons button:hover {
+            background: #4b6cb7;
+            color: white;
+        }
+
+        /* 統計面板 */
+        .stats-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .stats-modal h4 {
+            margin-bottom: 10px;
+            color: #4b6cb7;
+        }
+
+        .stats-modal p {
+            margin: 5px 0;
+        }
+
+        .stats-modal div {
+            margin: 10px 0;
+            padding: 5px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        /* 狀態欄 */
+        #statusBar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            z-index: 1002;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        /* 篩選選擇器 */
+        .filter-select {
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 0.85rem;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #4b6cb7;
+        }
+
+        /* 移動端調整 */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8rem;
@@ -639,7 +911,6 @@
                 padding: 15px;
             }
             
-            /* 移動端調整固定列的寬度 */
             th:first-child,
             td:first-child {
                 width: 40px;
@@ -651,61 +922,55 @@
             th:nth-child(2),
             td:nth-child(2) {
                 left: 40px;
-                width: 140px;
                 min-width: 140px;
                 max-width: 140px;
                 padding: 6px 8px;
             }
             
-            /* 移動端其他列 */
-            th:not(:first-child):not(:nth-child(2)),
-            td:not(:first-child):not(:nth-child(2)) {
+            th:nth-child(3),
+            td:nth-child(3) {
+                left: 180px;
+                min-width: 100px;
+                max-width: 100px;
+                padding: 6px 8px;
+            }
+            
+            th:nth-child(4),
+            td:nth-child(4) {
+                left: 280px;
+                min-width: 90px;
+                max-width: 90px;
+                padding: 6px 8px;
+            }
+            
+            th:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)),
+            td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) {
                 min-width: 80px;
                 max-width: 200px;
                 padding: 6px 8px;
             }
 
-            /* 移動端調整排序圖標 */
-            .sort-icons {
-                margin-left: 3px;
-            }
-            
-            .sort-icon {
-                border-left: 4px solid transparent;
-                border-right: 4px solid transparent;
-            }
-            
-            .sort-icon.sort-up {
-                border-bottom: 5px solid white;
-            }
-            
-            .sort-icon.sort-down {
-                border-top: 5px solid white;
+            .filter-panel {
+                max-height: 250px;
             }
 
-            /* 移動端篩選面板 */
             .filter-options {
-                max-height: 70px;
+                max-height: 120px;
                 gap: 8px;
-                margin-left: 0;
+                padding: 10px;
             }
 
             .filter-option {
                 font-size: 0.8rem;
+                padding: 4px 8px;
             }
 
             .filter-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .filter-title {
-                min-width: auto;
+                padding: 8px 12px;
             }
 
             .no-filter-data {
-                margin-left: 0;
+                padding: 12px;
             }
         }
         
@@ -728,7 +993,6 @@
                 font-size: 0.85rem;
             }
             
-            /* 手機端進一步調整固定列的寬度 */
             th:first-child,
             td:first-child {
                 width: 35px;
@@ -740,46 +1004,47 @@
             th:nth-child(2),
             td:nth-child(2) {
                 left: 35px;
-                width: 110px;
                 min-width: 110px;
                 max-width: 110px;
                 padding: 5px 6px;
+                font-size: 0.85rem;
             }
             
-            /* 手機端其他列 */
-            th:not(:first-child):not(:nth-child(2)),
-            td:not(:first-child):not(:nth-child(2)) {
+            th:nth-child(3),
+            td:nth-child(3) {
+                left: 145px;
+                min-width: 85px;
+                max-width: 85px;
+                padding: 5px 6px;
+                font-size: 0.85rem;
+            }
+            
+            th:nth-child(4),
+            td:nth-child(4) {
+                left: 230px;
+                min-width: 75px;
+                max-width: 75px;
+                padding: 5px 6px;
+                font-size: 0.85rem;
+            }
+            
+            th:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)),
+            td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) {
                 min-width: 60px;
                 max-width: 150px;
                 padding: 5px 6px;
+                font-size: 0.85rem;
             }
 
-            /* 手機端進一步調整排序圖標 */
-            .sort-icons {
-                margin-left: 2px;
-            }
-            
-            .sort-icon {
-                border-left: 3px solid transparent;
-                border-right: 3px solid transparent;
-            }
-            
-            .sort-icon.sort-up {
-                border-bottom: 4px solid white;
-            }
-            
-            .sort-icon.sort-down {
-                border-top: 4px solid white;
-            }
-
-            /* 手機端篩選面板 */
             .filter-panel {
-                padding: 10px 15px;
+                max-height: 200px;
+                padding: 10px;
             }
 
             .filter-options {
-                max-height: 60px;
+                max-height: 100px;
                 gap: 6px;
+                padding: 8px;
             }
 
             .filter-option {
@@ -803,26 +1068,30 @@
                         <select id="sheetSelect"></select>
                     </div>
                 </div>
-                <!-- 新增筛选面板切换按钮 -->
-                <button class="btn btn-filter" id="filterToggleBtn">📊 显示筛选</button>
+                <button class="btn btn-filter" id="filterToggleBtn">
+                    <span id="filterToggleText">📊 显示筛选</span>
+                    <span id="filterActiveIndicator" class="filter-status" style="display: none;">●</span>
+                </button>
             </div>
             <div class="right-controls">
                 <div class="selection-group">
                     <button class="btn btn-select-all" id="selectAllBtn">全选</button>
                     <span class="selection-info" id="selectionInfo">已选择 0 行</span>
-                    <!-- 新增本地讀取按鈕 -->
                     <button class="btn btn-local btn-hidden" id="localFileBtn">本地读取 Excel</button>
+                    <button class="btn" id="helpBtn" style="background: linear-gradient(90deg, #607d8b 0%, #455a64 100%);">⌨️ 快捷鍵</button>
+                    <button class="btn" id="resetSortBtn" style="background: linear-gradient(90deg, #ff9800 0%, #f57c00 100%);">重置排序</button>
                     <button class="btn btn-export" id="exportBtn">匯出選取資料</button>
                     <button class="btn btn-refresh" id="refreshBtn">更新</button>
                 </div>
             </div>
         </section>
 
-        <!-- 新增篩選面板 -->
+        <!-- 篩選面板 -->
         <div class="filter-panel" id="filterPanel">
             <div class="filter-section" id="cpuFilterSection">
                 <div class="filter-header">
-                    <div class="filter-title">CPU 篩選:</div>
+                    <div class="filter-title">CPU 篩選</div>
+                    <span class="filter-selected-count" id="cpuSelectedCount"></span>
                 </div>
                 <div class="filter-options" id="cpuFilterOptions">
                     <!-- CPU篩選選項將在這裡動態生成 -->
@@ -832,7 +1101,8 @@
             
             <div class="filter-section" id="gpuFilterSection">
                 <div class="filter-header">
-                    <div class="filter-title">GPU 篩選:</div>
+                    <div class="filter-title">GPU 篩選</div>
+                    <span class="filter-selected-count" id="gpuSelectedCount"></span>
                 </div>
                 <div class="filter-options" id="gpuFilterOptions">
                     <!-- GPU篩選選項將在這裡動態生成 -->
@@ -842,7 +1112,8 @@
             
             <div class="filter-section" id="mgpFilterSection">
                 <div class="filter-header">
-                    <div class="filter-title">MGP 篩選:</div>
+                    <div class="filter-title">MGP 篩選</div>
+                    <span class="filter-selected-count" id="mgpSelectedCount"></span>
                 </div>
                 <div class="filter-options" id="mgpFilterOptions">
                     <!-- MGP篩選選項將在這裡動態生成 -->
@@ -852,7 +1123,14 @@
             
             <div class="filter-actions">
                 <button class="filter-btn apply" id="applyFilter">套用篩選</button>
-                <button class="filter-btn" id="clearFilter">清除篩選</button>
+                <button class="filter-btn clear" id="clearFilter">清除篩選</button>
+                <button class="filter-btn clear-all" id="clearAllFilters">清除全部</button>
+                <button class="filter-btn" id="saveFilterBtn">💾 保存篩選</button>
+                <select class="filter-select" id="loadFilterSelect">
+                    <option value="">載入已保存篩選</option>
+                </select>
+                <button class="filter-btn" id="exportFilteredBtn">導出篩選結果</button>
+                <button class="filter-btn" id="statsBtn">📊 統計</button>
             </div>
         </div>
         
@@ -865,8 +1143,9 @@
         </section>
     </div>
 
+    <div id="statusBar"></div>
+
     <script>
-        // JavaScript 部分保持不變
         document.addEventListener('DOMContentLoaded', function() {
             const tableContainer = document.getElementById('tableContainer');
             const tableWrapper = document.getElementById('tableWrapper');
@@ -878,6 +1157,10 @@
             const localFileBtn = document.getElementById('localFileBtn');
             const selectionInfo = document.getElementById('selectionInfo');
             const filterToggleBtn = document.getElementById('filterToggleBtn');
+            const filterToggleText = document.getElementById('filterToggleText');
+            const filterActiveIndicator = document.getElementById('filterActiveIndicator');
+            const helpBtn = document.getElementById('helpBtn');
+            const resetSortBtn = document.getElementById('resetSortBtn');
             
             // 篩選相關元素
             const filterPanel = document.getElementById('filterPanel');
@@ -887,8 +1170,16 @@
             const cpuNoData = document.getElementById('cpuNoData');
             const gpuNoData = document.getElementById('gpuNoData');
             const mgpNoData = document.getElementById('mgpNoData');
+            const cpuSelectedCount = document.getElementById('cpuSelectedCount');
+            const gpuSelectedCount = document.getElementById('gpuSelectedCount');
+            const mgpSelectedCount = document.getElementById('mgpSelectedCount');
             const applyFilterBtn = document.getElementById('applyFilter');
             const clearFilterBtn = document.getElementById('clearFilter');
+            const clearAllFiltersBtn = document.getElementById('clearAllFilters');
+            const saveFilterBtn = document.getElementById('saveFilterBtn');
+            const loadFilterSelect = document.getElementById('loadFilterSelect');
+            const exportFilteredBtn = document.getElementById('exportFilteredBtn');
+            const statsBtn = document.getElementById('statsBtn');
             
             let currentWorkbook = null;
             let currentSheetData = null;
@@ -903,6 +1194,11 @@
             let gpuFilterValues = new Set();
             let mgpFilterValues = new Set();
             
+            // 原始篩選值集合（用於計數）
+            let cpuOriginalValues = new Set();
+            let gpuOriginalValues = new Set();
+            let mgpOriginalValues = new Set();
+            
             // 欄位索引
             let cpuColumnIndex = -1;
             let gpuColumnIndex = -1;
@@ -914,21 +1210,17 @@
             // 當前顯示的數據（篩選後）
             let currentDisplayData = [];
             
-            // 篩選選項的完整數據（用於動態更新計數）
-            let cpuFilterOptionsData = [];
-            let gpuFilterOptionsData = [];
-            let mgpFilterOptionsData = [];
+            // 是否正在應用篩選
+            let isApplyingFilter = false;
             
+            // 篩選歷史
+            let filterHistory = [];
+            const MAX_HISTORY = 10;
+
             // 創建快捷鍵提示元素
-            const createShortcutHint = () => {
-                const hint = document.createElement('div');
-                hint.className = 'shortcut-hint';
-                hint.textContent = 'Ctrl+Alt+F8: 顯示/隱藏本地讀取按鈕';
-                document.body.appendChild(hint);
-                return hint;
-            };
-            
-            const shortcutHint = createShortcutHint();
+            const shortcutHint = document.createElement('div');
+            shortcutHint.className = 'shortcut-hint';
+            document.body.appendChild(shortcutHint);
             
             // 顯示快捷鍵提示
             function showShortcutHint(message) {
@@ -936,6 +1228,14 @@
                 shortcutHint.classList.add('show');
                 setTimeout(() => {
                     shortcutHint.classList.remove('show');
+                }, 2000);
+                
+                // 同時更新狀態欄
+                const statusBar = document.getElementById('statusBar');
+                statusBar.textContent = message;
+                statusBar.style.opacity = '1';
+                setTimeout(() => {
+                    statusBar.style.opacity = '0';
                 }, 2000);
             }
             
@@ -956,7 +1256,6 @@
                 }
             }
             
-            // 頁面載入時載入按鈕顯示狀態
             loadButtonVisibilityPreference();
             
             // 載入篩選面板狀態
@@ -964,19 +1263,92 @@
                 const savedFilterState = localStorage.getItem('filterPanelVisible');
                 if (savedFilterState === 'true') {
                     isFilterPanelVisible = true;
-                    filterPanel.style.display = 'block';
-                    filterToggleBtn.innerHTML = '📊 隐藏筛选';
+                    filterPanel.classList.add('show');
+                    filterToggleText.textContent = '📊 隐藏筛选';
+                    filterToggleBtn.classList.add('active');
                 } else {
                     isFilterPanelVisible = false;
-                    filterPanel.style.display = 'none';
-                    filterToggleBtn.innerHTML = '📊 显示筛选';
+                    filterPanel.classList.remove('show');
+                    filterToggleText.textContent = '📊 显示筛选';
+                    filterToggleBtn.classList.remove('active');
                 }
             }
             
-            // 頁面載入時載入篩選面板狀態
             loadFilterPanelState();
             
-            // 新增本地讀取按鈕事件
+            // 載入篩選狀態
+            function loadFilterState() {
+                const saved = localStorage.getItem('filterState');
+                if (saved) {
+                    try {
+                        const filterState = JSON.parse(saved);
+                        cpuFilterValues = new Set(filterState.cpu || []);
+                        gpuFilterValues = new Set(filterState.gpu || []);
+                        mgpFilterValues = new Set(filterState.mgp || []);
+                        
+                        // 更新篩選指示器
+                        updateFilterActiveIndicator();
+                        
+                        // 更新復選框狀態
+                        if (currentSheetData) {
+                            setTimeout(() => {
+                                updateCheckboxStates();
+                                updateSelectedCounts();
+                            }, 100);
+                        }
+                    } catch (e) {
+                        console.error('加載篩選狀態失敗:', e);
+                    }
+                }
+            }
+            
+            // 載入篩選歷史
+            function loadFilterHistory() {
+                const saved = localStorage.getItem('filterHistory');
+                if (saved) {
+                    try {
+                        filterHistory = JSON.parse(saved);
+                    } catch (e) {
+                        console.error('載入篩選歷史失敗:', e);
+                    }
+                }
+            }
+            
+            loadFilterHistory();
+            
+            // 載入已保存的篩選條件
+            function loadSavedFilters() {
+                const filters = JSON.parse(localStorage.getItem('savedFilters') || '{}');
+                loadFilterSelect.innerHTML = '<option value="">載入已保存篩選</option>';
+                
+                Object.keys(filters).forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    loadFilterSelect.appendChild(option);
+                });
+            }
+            
+            loadSavedFilters();
+            
+            // 更新篩選激活指示器
+            function updateFilterActiveIndicator() {
+                const hasActiveFilter = cpuFilterValues.size > 0 || gpuFilterValues.size > 0 || mgpFilterValues.size > 0;
+                if (hasActiveFilter) {
+                    filterActiveIndicator.style.display = 'inline-block';
+                } else {
+                    filterActiveIndicator.style.display = 'none';
+                }
+            }
+            
+            // 更新各區段選中數量
+            function updateSelectedCounts() {
+                cpuSelectedCount.textContent = cpuFilterValues.size > 0 ? `(${cpuFilterValues.size})` : '';
+                gpuSelectedCount.textContent = gpuFilterValues.size > 0 ? `(${gpuFilterValues.size})` : '';
+                mgpSelectedCount.textContent = mgpFilterValues.size > 0 ? `(${mgpFilterValues.size})` : '';
+            }
+            
+            // 本地讀取按鈕事件
             localFileBtn.addEventListener('click', function() {
                 const fileInput = document.createElement('input');
                 fileInput.type = 'file';
@@ -1042,11 +1414,33 @@
                 reader.readAsArrayBuffer(file);
             }
             
-            // 快捷鍵隱藏/顯示功能
+            // 快捷鍵
             document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.altKey && e.key === 'F8') {
                     e.preventDefault();
                     toggleLocalFileButton();
+                }
+                
+                // Ctrl+A 全選
+                if (e.ctrlKey && e.key === 'a') {
+                    e.preventDefault();
+                    if (tableWrapper.contains(document.activeElement)) {
+                        selectAllBtn.click();
+                    }
+                }
+                
+                // Esc 清除所有篩選
+                if (e.key === 'Escape' && isFilterPanelVisible) {
+                    clearFilter('all');
+                }
+                
+                // Ctrl+F 聚焦篩選面板
+                if (e.ctrlKey && e.key === 'f') {
+                    e.preventDefault();
+                    if (!isFilterPanelVisible) {
+                        filterToggleBtn.click();
+                    }
+                    filterPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
                 
                 if (sheetSelect === document.activeElement && 
@@ -1075,102 +1469,314 @@
                 localStorage.setItem('localFileBtnVisible', isLocalFileBtnVisible.toString());
             }
             
+            // 快捷鍵幫助
+            helpBtn.addEventListener('click', function() {
+                const shortcuts = [
+                    'Ctrl+A: 全選',
+                    'Ctrl+F: 聚焦篩選面板',
+                    'Esc: 清除所有篩選',
+                ];
+                
+                alert('鍵盤快捷鍵：\n' + shortcuts.join('\n'));
+            });
+            
+            // 重置排序
+            resetSortBtn.addEventListener('click', function() {
+                currentSortColumn = null;
+                currentSortDirection = null;
+                
+                // 清除排序圖標
+                const headers = tableContainer.querySelectorAll('th');
+                headers.forEach(header => {
+                    const sortIcons = header.querySelectorAll('.sort-icon');
+                    sortIcons.forEach(icon => {
+                        icon.classList.remove('active');
+                    });
+                });
+                
+                // 恢復原始順序
+                if (originalDataRows.length > 0) {
+                    currentDisplayData = [...originalDataRows];
+                    renderTable(currentDisplayData);
+                }
+                
+                showShortcutHint('排序已重置');
+            });
+            
             // 篩選面板切換事件
             filterToggleBtn.addEventListener('click', function() {
                 isFilterPanelVisible = !isFilterPanelVisible;
-                filterPanel.style.display = isFilterPanelVisible ? 'block' : 'none';
-                filterToggleBtn.innerHTML = isFilterPanelVisible ? '📊 隐藏筛选' : '📊 显示筛选';
+                if (isFilterPanelVisible) {
+                    filterPanel.classList.add('show');
+                    filterToggleText.textContent = '📊 隐藏筛选';
+                    filterToggleBtn.classList.add('active');
+                } else {
+                    filterPanel.classList.remove('show');
+                    filterToggleText.textContent = '📊 显示筛选';
+                    filterToggleBtn.classList.remove('active');
+                }
                 
-                // 保存篩選面板狀態
                 localStorage.setItem('filterPanelVisible', isFilterPanelVisible.toString());
             });
             
             // 篩選功能事件監聽
-            applyFilterBtn.addEventListener('click', applyFilter);
-            clearFilterBtn.addEventListener('click', clearFilter);
+            applyFilterBtn.addEventListener('click', function() {
+                if (!isApplyingFilter) {
+                    applyFilter();
+                }
+            });
+            
+            clearFilterBtn.addEventListener('click', function() {
+                clearFilter('current');
+            });
+            
+            clearAllFiltersBtn.addEventListener('click', function() {
+                clearFilter('all');
+            });
+            
+            // 保存篩選條件
+            saveFilterBtn.addEventListener('click', function() {
+                const name = prompt('請輸入篩選條件名稱：');
+                if (name) {
+                    saveCurrentFilter(name);
+                }
+            });
+            
+            // 載入篩選條件
+            loadFilterSelect.addEventListener('change', function() {
+                if (this.value) {
+                    loadSavedFilter(this.value);
+                    this.value = '';
+                }
+            });
+            
+            // 導出篩選結果
+            exportFilteredBtn.addEventListener('click', function() {
+                exportFilteredRows();
+            });
+            
+            // 顯示統計
+            statsBtn.addEventListener('click', function() {
+                showFilterStats();
+            });
             
             // 添加篩選區段折疊/展開功能
             document.querySelectorAll('.filter-header').forEach(header => {
-                header.addEventListener('click', function() {
+                header.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                        return;
+                    }
                     const section = this.parentElement;
                     section.classList.toggle('collapsed');
                 });
             });
             
-            // 套用篩選
-            function applyFilter() {
-                if (!currentSheetData || currentSheetData.length < 2) return;
-                
-                const headers = currentSheetData[0];
-                const dataRows = currentSheetData.slice(1);
-                
-                // 如果沒有任何篩選值被選擇，顯示所有數據
-                if (cpuFilterValues.size === 0 && gpuFilterValues.size === 0 && mgpFilterValues.size === 0) {
-                    currentDisplayData = dataRows;
-                    displayFilteredData(currentDisplayData);
-                    // 更新篩選計數（基於完整數據）
-                    updateFilterCounts(dataRows);
-                    return;
-                }
-                
-                // 篩選數據
-                currentDisplayData = dataRows.filter(row => {
-                    let cpuMatch = true;
-                    let gpuMatch = true;
-                    let mgpMatch = true;
-                    
-                    // CPU 篩選
-                    if (cpuColumnIndex !== -1 && cpuFilterValues.size > 0) {
-                        const cpuValue = row[cpuColumnIndex] || '';
-                        cpuMatch = cpuFilterValues.has(cpuValue.toString());
-                    }
-                    
-                    // GPU 篩選
-                    if (gpuColumnIndex !== -1 && gpuFilterValues.size > 0) {
-                        const gpuValue = row[gpuColumnIndex] || '';
-                        gpuMatch = gpuFilterValues.has(gpuValue.toString());
-                    }
-                    
-                    // MGP 篩選
-                    if (mgpColumnIndex !== -1 && mgpFilterValues.size > 0) {
-                        const mgpValue = row[mgpColumnIndex] || '';
-                        mgpMatch = mgpFilterValues.has(mgpValue.toString());
-                    }
-                    
-                    return cpuMatch && gpuMatch && mgpMatch;
-                });
-                
-                displayFilteredData(currentDisplayData);
-                
-                // 更新篩選計數（基於篩選後的數據）
-                updateFilterCounts(currentDisplayData);
-                
-                // 保存篩選狀態
-                saveFilterState();
+            // 保存篩選條件
+            function saveCurrentFilter(name) {
+                const filters = JSON.parse(localStorage.getItem('savedFilters') || '{}');
+                filters[name] = {
+                    cpu: Array.from(cpuFilterValues),
+                    gpu: Array.from(gpuFilterValues),
+                    mgp: Array.from(mgpFilterValues)
+                };
+                localStorage.setItem('savedFilters', JSON.stringify(filters));
+                loadSavedFilters();
+                showShortcutHint(`篩選條件「${name}」已保存`);
             }
             
-            // 顯示篩選後的數據
-            function displayFilteredData(filteredData) {
+            // 載入篩選條件
+            function loadSavedFilter(name) {
+                const filters = JSON.parse(localStorage.getItem('savedFilters') || '{}');
+                const filter = filters[name];
+                if (filter) {
+                    cpuFilterValues = new Set(filter.cpu || []);
+                    gpuFilterValues = new Set(filter.gpu || []);
+                    mgpFilterValues = new Set(filter.mgp || []);
+                    
+                    updateCheckboxStates();
+                    updateSelectedCounts();
+                    applyFilter();
+                    showShortcutHint(`已載入篩選條件「${name}」`);
+                }
+            }
+            
+            // 防抖函數
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+            
+            const debouncedApplyFilter = debounce(function() {
+                applyFilter();
+            }, 300);
+            
+            // 篩選選項變更事件
+            function handleFilterCheckboxChange(e) {
+                e.stopPropagation();
+                
+                if (this.checked) {
+                    if (this.dataset.filterType === 'cpu') {
+                        cpuFilterValues.add(this.value);
+                    } else if (this.dataset.filterType === 'gpu') {
+                        gpuFilterValues.add(this.value);
+                    } else if (this.dataset.filterType === 'mgp') {
+                        mgpFilterValues.add(this.value);
+                    }
+                } else {
+                    if (this.dataset.filterType === 'cpu') {
+                        cpuFilterValues.delete(this.value);
+                    } else if (this.dataset.filterType === 'gpu') {
+                        gpuFilterValues.delete(this.value);
+                    } else if (this.dataset.filterType === 'mgp') {
+                        mgpFilterValues.delete(this.value);
+                    }
+                }
+                
+                updateSelectedCounts();
+                debouncedApplyFilter();
+            }
+            
+            // 套用篩選
+            function applyFilter() {
+                if (isApplyingFilter || !currentSheetData || currentSheetData.length < 2) return;
+                
+                isApplyingFilter = true;
+                applyFilterBtn.disabled = true;
+                applyFilterBtn.textContent = '篩選中...';
+                
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        try {
+                            const headers = currentSheetData[0];
+                            const dataRows = currentSheetData.slice(1);
+                            
+                            if (cpuFilterValues.size === 0 && gpuFilterValues.size === 0 && mgpFilterValues.size === 0) {
+                                currentDisplayData = [...dataRows];
+                            } else {
+                                currentDisplayData = dataRows.filter(row => {
+                                    let cpuMatch = true;
+                                    let gpuMatch = true;
+                                    let mgpMatch = true;
+                                    
+                                    if (cpuColumnIndex !== -1 && cpuFilterValues.size > 0) {
+                                        const cpuValue = row[cpuColumnIndex] || '';
+                                        cpuMatch = cpuFilterValues.has(cpuValue.toString());
+                                    }
+                                    
+                                    if (gpuColumnIndex !== -1 && gpuFilterValues.size > 0) {
+                                        const gpuValue = row[gpuColumnIndex] || '';
+                                        gpuMatch = gpuFilterValues.has(gpuValue.toString());
+                                    }
+                                    
+                                    if (mgpColumnIndex !== -1 && mgpFilterValues.size > 0) {
+                                        const mgpValue = row[mgpColumnIndex] || '';
+                                        mgpMatch = mgpFilterValues.has(mgpValue.toString());
+                                    }
+                                    
+                                    return cpuMatch && gpuMatch && mgpMatch;
+                                });
+                            }
+                            
+                            if (currentSortColumn !== null && currentSortDirection !== null) {
+                                sortData(currentSortColumn, currentSortDirection);
+                            }
+                            
+                            renderTable(currentDisplayData);
+                            updateFilterCounts(originalDataRows);
+                            updateFilterActiveIndicator();
+                            saveFilterState();
+                            saveFilterHistory();
+                            
+                        } catch (error) {
+                            console.error('篩選過程中出錯:', error);
+                            showShortcutHint('篩選失敗');
+                        } finally {
+                            isApplyingFilter = false;
+                            applyFilterBtn.disabled = false;
+                            applyFilterBtn.textContent = '套用篩選';
+                        }
+                    }, 10);
+                });
+            }
+            
+            // 保存篩選歷史
+            function saveFilterHistory() {
+                const currentFilter = {
+                    cpu: Array.from(cpuFilterValues),
+                    gpu: Array.from(gpuFilterValues),
+                    mgp: Array.from(mgpFilterValues),
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                filterHistory.unshift(currentFilter);
+                if (filterHistory.length > MAX_HISTORY) {
+                    filterHistory.pop();
+                }
+                
+                localStorage.setItem('filterHistory', JSON.stringify(filterHistory));
+            }
+            
+            // 清除篩選
+            function clearFilter(mode = 'current') {
+                if (mode === 'all' || mode === 'current') {
+                    const checkboxes = filterPanel.querySelectorAll('.filter-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    
+                    cpuFilterValues.clear();
+                    gpuFilterValues.clear();
+                    mgpFilterValues.clear();
+                    
+                    updateSelectedCounts();
+                    
+                    if (currentSheetData && currentSheetData.length > 1) {
+                        currentDisplayData = [...originalDataRows];
+                        
+                        if (currentSortColumn !== null && currentSortDirection !== null) {
+                            sortData(currentSortColumn, currentSortDirection);
+                        }
+                        
+                        renderTable(currentDisplayData);
+                        updateFilterCounts(originalDataRows);
+                    }
+                    
+                    updateFilterActiveIndicator();
+                    saveFilterState();
+                }
+            }
+            
+            // 渲染表格
+            function renderTable(data) {
                 const table = tableContainer.querySelector('table');
                 if (!table) return;
                 
                 const tbody = table.querySelector('tbody');
-                tbody.innerHTML = '';
+                const headers = currentSheetData[0];
+                
+                const fragment = document.createDocumentFragment();
                 
                 selectedRows.clear();
                 updateSelectionInfo();
                 
-                // 添加篩選後的行
-                filteredData.forEach((rowData, index) => {
+                data.forEach((rowData, index) => {
                     const row = document.createElement('tr');
                     
-                    // 添加選擇框
                     const selectCell = document.createElement('td');
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.className = 'select-checkbox';
                     checkbox.dataset.rowIndex = index;
-                    checkbox.addEventListener('change', function() {
+                    
+                    checkbox.addEventListener('change', function(e) {
+                        e.stopPropagation();
                         const rowIndex = parseInt(this.dataset.rowIndex);
                         if (this.checked) {
                             selectedRows.add(rowIndex);
@@ -1179,87 +1785,107 @@
                         }
                         updateSelectionInfo();
                         updateRowSelectionStyles();
+                        updateSelectAllHeaderState();
                     });
+                    
                     selectCell.appendChild(checkbox);
                     row.appendChild(selectCell);
                     
-                    const headers = currentSheetData[0];
                     for (let j = 0; j < headers.length; j++) {
                         const td = document.createElement('td');
-                        td.textContent = rowData[j] || '';
-                        td.title = rowData[j] || ''; // 添加title屬性以便懸停顯示完整內容
+                        const cellValue = rowData[j] || '';
+                        td.textContent = cellValue;
+                        td.title = cellValue;
                         row.appendChild(td);
                     }
                     
-                    tbody.appendChild(row);
+                    fragment.appendChild(row);
                 });
+                
+                tbody.innerHTML = '';
+                tbody.appendChild(fragment);
                 
                 updateRowSelectionStyles();
+                updateSelectAllHeaderState();
             }
             
-            // 清除篩選
-            function clearFilter() {
-                // 取消所有篩選勾選
-                const checkboxes = filterPanel.querySelectorAll('.filter-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = false;
+            // 更新全選頭部狀態
+            function updateSelectAllHeaderState() {
+                const selectAllHeader = document.getElementById('selectAllHeader');
+                if (selectAllHeader) {
+                    const checkboxes = document.querySelectorAll('.select-checkbox:not(#selectAllHeader)');
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    
+                    selectAllHeader.checked = allChecked;
+                    selectAllHeader.indeterminate = !allChecked && anyChecked;
+                }
+            }
+            
+            // 排序數據
+            function sortData(columnIndex, direction) {
+                if (!currentDisplayData || currentDisplayData.length === 0) return;
+                
+                currentDisplayData.sort((a, b) => {
+                    let valueA = a[columnIndex];
+                    let valueB = b[columnIndex];
+                    
+                    const numA = parseFloat(valueA);
+                    const numB = parseFloat(valueB);
+                    
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        valueA = numA;
+                        valueB = numB;
+                    } else {
+                        valueA = String(valueA || '').toLowerCase();
+                        valueB = String(valueB || '').toLowerCase();
+                    }
+                    
+                    if (direction === 'asc') {
+                        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+                    } else {
+                        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+                    }
                 });
                 
-                cpuFilterValues.clear();
-                gpuFilterValues.clear();
-                mgpFilterValues.clear();
-                
-                // 顯示所有數據
-                if (currentSheetData && currentSheetData.length > 1) {
-                    currentDisplayData = currentSheetData.slice(1);
-                    displayFilteredData(currentDisplayData);
-                    // 重置篩選計數為原始值
-                    updateFilterCounts(currentDisplayData);
-                }
-                
-                // 保存篩選狀態
-                saveFilterState();
+                currentSortColumn = columnIndex;
+                currentSortDirection = direction;
             }
             
-            // 更新篩選計數（根據傳入的數據）
+            // 更新篩選計數
             function updateFilterCounts(data) {
                 if (!data || data.length === 0) return;
                 
-                // 計算每個篩選類別在傳入數據中的計數
-                const cpuCounts = {};
-                const gpuCounts = {};
-                const mgpCounts = {};
+                const cpuCounts = new Map();
+                const gpuCounts = new Map();
+                const mgpCounts = new Map();
                 
                 data.forEach(row => {
-                    // CPU 計數
                     if (cpuColumnIndex !== -1) {
                         const cpuValue = row[cpuColumnIndex] || '';
                         if (cpuValue) {
                             const valueStr = cpuValue.toString();
-                            cpuCounts[valueStr] = (cpuCounts[valueStr] || 0) + 1;
+                            cpuCounts.set(valueStr, (cpuCounts.get(valueStr) || 0) + 1);
                         }
                     }
                     
-                    // GPU 計數
                     if (gpuColumnIndex !== -1) {
                         const gpuValue = row[gpuColumnIndex] || '';
                         if (gpuValue) {
                             const valueStr = gpuValue.toString();
-                            gpuCounts[valueStr] = (gpuCounts[valueStr] || 0) + 1;
+                            gpuCounts.set(valueStr, (gpuCounts.get(valueStr) || 0) + 1);
                         }
                     }
                     
-                    // MGP 計數
                     if (mgpColumnIndex !== -1) {
                         const mgpValue = row[mgpColumnIndex] || '';
                         if (mgpValue) {
                             const valueStr = mgpValue.toString();
-                            mgpCounts[valueStr] = (mgpCounts[valueStr] || 0) + 1;
+                            mgpCounts.set(valueStr, (mgpCounts.get(valueStr) || 0) + 1);
                         }
                     }
                 });
                 
-                // 更新篩選選項的計數顯示
                 updateFilterSectionCounts('cpu', cpuCounts);
                 updateFilterSectionCounts('gpu', gpuCounts);
                 updateFilterSectionCounts('mgp', mgpCounts);
@@ -1270,20 +1896,17 @@
                 const checkboxes = document.querySelectorAll(`.filter-checkbox[data-filter-type="${filterType}"]`);
                 checkboxes.forEach(checkbox => {
                     const value = checkbox.value;
-                    const count = valueCounts[value] || 0;
+                    const count = valueCounts.get(value) || 0;
                     const countElement = checkbox.parentNode.querySelector('.filter-count');
                     if (countElement) {
                         countElement.textContent = count;
                         
-                        // 如果計數為0，則禁用該選項
                         if (count === 0) {
                             checkbox.disabled = true;
-                            checkbox.parentNode.style.opacity = '0.5';
-                            checkbox.parentNode.style.cursor = 'not-allowed';
+                            checkbox.parentNode.classList.add('disabled');
                         } else {
                             checkbox.disabled = false;
-                            checkbox.parentNode.style.opacity = '1';
-                            checkbox.parentNode.style.cursor = 'pointer';
+                            checkbox.parentNode.classList.remove('disabled');
                         }
                     }
                 });
@@ -1299,43 +1922,24 @@
                 localStorage.setItem('filterState', JSON.stringify(filterState));
             }
             
-            // 加載篩選狀態
-            function loadFilterState() {
-                const saved = localStorage.getItem('filterState');
-                if (saved) {
-                    try {
-                        const filterState = JSON.parse(saved);
-                        cpuFilterValues = new Set(filterState.cpu || []);
-                        gpuFilterValues = new Set(filterState.gpu || []);
-                        mgpFilterValues = new Set(filterState.mgp || []);
-                        
-                        // 更新復選框狀態
-                        updateCheckboxStates();
-                    } catch (e) {
-                        console.error('加載篩選狀態失敗:', e);
-                    }
-                }
-            }
-            
             // 更新復選框狀態
             function updateCheckboxStates() {
-                // CPU 復選框
                 cpuFilterValues.forEach(value => {
                     const checkbox = document.querySelector(`.filter-checkbox[data-filter-type="cpu"][value="${value}"]`);
                     if (checkbox) checkbox.checked = true;
                 });
                 
-                // GPU 復選框
                 gpuFilterValues.forEach(value => {
                     const checkbox = document.querySelector(`.filter-checkbox[data-filter-type="gpu"][value="${value}"]`);
                     if (checkbox) checkbox.checked = true;
                 });
                 
-                // MGP 復選框
                 mgpFilterValues.forEach(value => {
                     const checkbox = document.querySelector(`.filter-checkbox[data-filter-type="mgp"][value="${value}"]`);
                     if (checkbox) checkbox.checked = true;
                 });
+                
+                updateSelectedCounts();
             }
             
             // 提取欄位值並建立篩選選項
@@ -1345,26 +1949,20 @@
                 const headers = currentSheetData[0];
                 originalDataRows = currentSheetData.slice(1);
                 
-                // 找到各欄位的索引
                 cpuColumnIndex = headers.findIndex(header => 
-                    header.toLowerCase().includes('cpu'));
+                    header && header.toLowerCase().includes('cpu'));
                 gpuColumnIndex = headers.findIndex(header => 
-                    header.toLowerCase().includes('gpu'));
+                    header && header.toLowerCase().includes('gpu'));
                 mgpColumnIndex = headers.findIndex(header => 
-                    header.toLowerCase().includes('mgp'));
+                    header && header.toLowerCase().includes('mgp'));
                 
-                // 收集各欄位的值
                 extractAndRenderFilterValues('cpu', cpuColumnIndex, cpuFilterOptions, cpuNoData);
                 extractAndRenderFilterValues('gpu', gpuColumnIndex, gpuFilterOptions, gpuNoData);
                 extractAndRenderFilterValues('mgp', mgpColumnIndex, mgpFilterOptions, mgpNoData);
                 
-                // 初始更新篩選計數（基於完整數據）
                 updateFilterCounts(originalDataRows);
-                
-                // 加載保存的篩選狀態
                 loadFilterState();
                 
-                // 如果有篩選狀態，自動應用篩選
                 if (cpuFilterValues.size > 0 || gpuFilterValues.size > 0 || mgpFilterValues.size > 0) {
                     setTimeout(() => {
                         applyFilter();
@@ -1376,7 +1974,6 @@
             function extractAndRenderFilterValues(filterType, columnIndex, optionsContainer, noDataElement) {
                 if (!currentSheetData || currentSheetData.length < 2) return;
                 
-                const headers = currentSheetData[0];
                 const dataRows = currentSheetData.slice(1);
                 
                 if (columnIndex === -1) {
@@ -1385,87 +1982,182 @@
                     return;
                 }
                 
-                // 收集所有值
-                const allValues = new Set();
-                const valueCounts = {};
+                optionsContainer.style.display = 'flex';
+                noDataElement.style.display = 'none';
+                
+                const valueMap = new Map();
                 
                 dataRows.forEach(row => {
                     const value = row[columnIndex] || '';
                     if (value) {
                         const valueStr = value.toString();
-                        allValues.add(valueStr);
-                        valueCounts[valueStr] = (valueCounts[valueStr] || 0) + 1;
+                        valueMap.set(valueStr, (valueMap.get(valueStr) || 0) + 1);
                     }
                 });
                 
-                // 保存篩選選項數據
                 if (filterType === 'cpu') {
-                    cpuFilterOptionsData = Array.from(allValues).sort();
+                    cpuOriginalValues = new Set(valueMap.keys());
                 } else if (filterType === 'gpu') {
-                    gpuFilterOptionsData = Array.from(allValues).sort();
+                    gpuOriginalValues = new Set(valueMap.keys());
                 } else if (filterType === 'mgp') {
-                    mgpFilterOptionsData = Array.from(allValues).sort();
+                    mgpOriginalValues = new Set(valueMap.keys());
                 }
                 
-                // 渲染篩選選項
-                if (allValues.size > 0) {
-                    optionsContainer.style.display = 'flex';
-                    noDataElement.style.display = 'none';
-                    renderFilterOptions(filterType, allValues, valueCounts, optionsContainer);
-                } else {
-                    optionsContainer.style.display = 'none';
-                    noDataElement.style.display = 'block';
-                }
+                renderFilterOptions(filterType, valueMap, optionsContainer);
             }
             
             // 渲染篩選選項
-            function renderFilterOptions(filterType, allValues, valueCounts, optionsContainer) {
+            function renderFilterOptions(filterType, valueMap, optionsContainer) {
                 optionsContainer.innerHTML = '';
                 
-                const sortedValues = Array.from(allValues).sort();
+                const sortedValues = Array.from(valueMap.keys()).sort();
                 
                 sortedValues.forEach(value => {
                     const option = document.createElement('div');
                     option.className = 'filter-option';
+                    
+                    const count = valueMap.get(value) || 0;
+                    
+                    const checkboxId = `filter-${filterType}-${value.replace(/[^a-zA-Z0-9]/g, '-')}`;
+                    
                     option.innerHTML = `
-                        <input type="checkbox" class="filter-checkbox" value="${value}" 
-                               id="filter-${filterType}-${value.replace(/[^a-zA-Z0-9]/g, '-')}" 
-                               data-filter-type="${filterType}">
-                        <label for="filter-${filterType}-${value.replace(/[^a-zA-Z0-9]/g, '-')}">
-                            ${value}
-                            <span class="filter-count">${valueCounts[value] || 0}</span>
+                        <input type="checkbox" class="filter-checkbox" value="${value.replace(/"/g, '&quot;')}" 
+                               id="${checkboxId}" data-filter-type="${filterType}">
+                        <label for="${checkboxId}" class="filter-label">
+                            <span class="filter-value">${value}</span>
+                            <span class="filter-count">${count}</span>
                         </label>
                     `;
                     
                     const checkbox = option.querySelector('.filter-checkbox');
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            if (filterType === 'cpu') {
-                                cpuFilterValues.add(this.value);
-                            } else if (filterType === 'gpu') {
-                                gpuFilterValues.add(this.value);
-                            } else if (filterType === 'mgp') {
-                                mgpFilterValues.add(this.value);
-                            }
-                        } else {
-                            if (filterType === 'cpu') {
-                                cpuFilterValues.delete(this.value);
-                            } else if (filterType === 'gpu') {
-                                gpuFilterValues.delete(this.value);
-                            } else if (filterType === 'mgp') {
-                                mgpFilterValues.delete(this.value);
-                            }
-                        }
-                        
-                        // 立即应用筛选并更新计数
-                        applyFilter();
-                        
-                        // 保存篩選狀態
-                        saveFilterState();
-                    });
+                    checkbox.addEventListener('change', handleFilterCheckboxChange);
                     
                     optionsContainer.appendChild(option);
                 });
+                
+                if (valueMap.size > 10) {
+                    addFilterSearch(filterType, optionsContainer);
+                }
+            }
+            
+            // 添加篩選搜尋框
+            function addFilterSearch(filterType, optionsContainer) {
+                const existingSearch = optionsContainer.parentNode.querySelector('.filter-search');
+                if (existingSearch) return;
+                
+                const searchInput = document.createElement('input');
+                searchInput.type = 'text';
+                searchInput.className = 'filter-search';
+                searchInput.placeholder = `搜尋${filterType.toUpperCase()}...`;
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const options = optionsContainer.querySelectorAll('.filter-option');
+                    options.forEach(option => {
+                        const value = option.querySelector('.filter-value').textContent.toLowerCase();
+                        if (value.includes(searchTerm)) {
+                            option.style.display = 'flex';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+                });
+                
+                optionsContainer.parentNode.insertBefore(searchInput, optionsContainer);
+            }
+            
+            // 導出篩選結果
+            function exportFilteredRows() {
+                if (currentDisplayData.length === 0) {
+                    alert('沒有可導出的數據');
+                    return;
+                }
+                
+                const headers = currentSheetData[0];
+                const exportData = [headers, ...currentDisplayData];
+                const ws = XLSX.utils.aoa_to_sheet(exportData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, '篩選結果');
+                XLSX.writeFile(wb, 'filtered_data.xlsx');
+                
+                showShortcutHint(`已導出 ${currentDisplayData.length} 行數據`);
+            }
+            
+            // 顯示統計
+            function showFilterStats() {
+                const stats = {
+                    total: originalDataRows.length,
+                    filtered: currentDisplayData.length,
+                    cpu: {},
+                    gpu: {},
+                    mgp: {}
+                };
+                
+                if (cpuColumnIndex !== -1) {
+                    currentDisplayData.forEach(row => {
+                        const value = row[cpuColumnIndex] || '未知';
+                        stats.cpu[value] = (stats.cpu[value] || 0) + 1;
+                    });
+                }
+                
+                if (gpuColumnIndex !== -1) {
+                    currentDisplayData.forEach(row => {
+                        const value = row[gpuColumnIndex] || '未知';
+                        stats.gpu[value] = (stats.gpu[value] || 0) + 1;
+                    });
+                }
+                
+                if (mgpColumnIndex !== -1) {
+                    currentDisplayData.forEach(row => {
+                        const value = row[mgpColumnIndex] || '未知';
+                        stats.mgp[value] = (stats.mgp[value] || 0) + 1;
+                    });
+                }
+                
+                const statsHtml = `
+                    <h4>篩選統計</h4>
+                    <p>總筆數: ${stats.total} | 篩選後: ${stats.filtered} (${Math.round(stats.filtered/stats.total*100)}%)</p>
+                    ${Object.keys(stats.cpu).length > 0 ? `
+                        <div>
+                            <strong>CPU分佈:</strong><br>
+                            ${Object.entries(stats.cpu).map(([k,v]) => `${k}: ${v}`).join('<br>')}
+                        </div>
+                    ` : ''}
+                    ${Object.keys(stats.gpu).length > 0 ? `
+                        <div>
+                            <strong>GPU分佈:</strong><br>
+                            ${Object.entries(stats.gpu).map(([k,v]) => `${k}: ${v}`).join('<br>')}
+                        </div>
+                    ` : ''}
+                    ${Object.keys(stats.mgp).length > 0 ? `
+                        <div>
+                            <strong>MGP分佈:</strong><br>
+                            ${Object.entries(stats.mgp).map(([k,v]) => `${k}: ${v}`).join('<br>')}
+                        </div>
+                    ` : ''}
+                `;
+                
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'stats-modal';
+                statsDiv.innerHTML = statsHtml;
+                
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 1000;
+                `;
+                
+                overlay.addEventListener('click', function() {
+                    document.body.removeChild(overlay);
+                    document.body.removeChild(statsDiv);
+                });
+                
+                document.body.appendChild(overlay);
+                document.body.appendChild(statsDiv);
             }
             
             // 選擇工作表後焦點移到表格
@@ -1477,7 +2169,7 @@
             
             // 全選按鈕事件
             selectAllBtn.addEventListener('click', function() {
-                const checkboxes = tableContainer.querySelectorAll('.select-checkbox');
+                const checkboxes = tableContainer.querySelectorAll('.select-checkbox:not(#selectAllHeader)');
                 const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
                 
                 checkboxes.forEach(checkbox => {
@@ -1492,6 +2184,12 @@
                 
                 updateSelectionInfo();
                 updateRowSelectionStyles();
+                
+                const selectAllHeader = document.getElementById('selectAllHeader');
+                if (selectAllHeader) {
+                    selectAllHeader.checked = !allChecked;
+                    selectAllHeader.indeterminate = false;
+                }
             });
             
             // 更新按鈕事件
@@ -1509,7 +2207,7 @@
                 selectionInfo.textContent = `已选择 ${selectedRows.size} 行`;
             }
             
-            // 更新行选择样式
+            // 更新行選擇樣式
             function updateRowSelectionStyles() {
                 const rows = tableContainer.querySelectorAll('tbody tr');
                 rows.forEach((row, index) => {
@@ -1521,7 +2219,7 @@
                 });
             }
             
-            // 导出选中的行
+            // 導出選中的行
             function exportSelectedRows() {
                 if (selectedRows.size === 0) {
                     alert('请先选择要导出的行');
@@ -1532,24 +2230,20 @@
                 
                 const headers = currentSheetData[0];
                 
-                // 筛选选中的行 - 使用 currentDisplayData 而不是原始数据
                 const selectedData = Array.from(selectedRows)
                     .sort((a, b) => a - b)
                     .map(rowIndex => currentDisplayData[rowIndex]);
                 
-                // 创建新的工作簿
                 const exportData = [headers, ...selectedData];
                 const ws = XLSX.utils.aoa_to_sheet(exportData);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, '导出数据');
                 
-                // 导出文件
                 XLSX.writeFile(wb, 'selected_data.xlsx');
             }
             
-            // 加载Excel文件
+            // 加載Excel文件
             function loadExcelFile() {
-                // 显示加载状态
                 tableContainer.innerHTML = '<div class="no-data">正在更新表格数据...</div>';
                 sheetSelector.style.display = 'none';
                 currentSortColumn = null;
@@ -1557,14 +2251,11 @@
                 selectedRows.clear();
                 updateSelectionInfo();
                 
-                // 显示加载状态
                 refreshBtn.disabled = true;
                 refreshBtn.textContent = '更新中...';
                 
-                // 添加时间戳避免缓存
                 const timestamp = new Date().getTime();
                 
-                // 使用fetch API获取Excel文件
                 fetch(`./data.xlsx?t=${timestamp}`)
                     .then(response => {
                         if (!response.ok) {
@@ -1575,11 +2266,8 @@
                     .then(data => {
                         try {
                             currentWorkbook = XLSX.read(data, { type: 'array' });
-                            // 清空表格容器
                             tableContainer.innerHTML = '';
-                            // 重新显示工作簿
                             displayWorkbook(currentWorkbook);
-                            // 加载完成后焦点移到表格
                             setTimeout(() => {
                                 tableWrapper.focus();
                             }, 500);
@@ -1590,31 +2278,23 @@
                     .catch(error => {
                         console.error('加载Excel文件时出错:', error);
                         tableContainer.innerHTML = `<div class="no-data">加载失败: ${error.message}</div>`;
-                        // 恢复按钮状态
-                        refreshBtn.disabled = false;
-                        refreshBtn.textContent = '更新';
                     })
                     .finally(() => {
-                        // 恢复按钮状态
                         refreshBtn.disabled = false;
                         refreshBtn.textContent = '更新';
                     });
             }
             
-            // 显示工作簿内容
+            // 顯示工作簿內容
             function displayWorkbook(workbook) {
-                // 清空表格容器
                 tableContainer.innerHTML = '';
                 
-                // 获取所有工作表名称
                 const sheetNames = workbook.SheetNames;
                 
-                // 如果只有一个工作表，直接显示
                 if (sheetNames.length === 1) {
                     displaySheet(workbook.Sheets[sheetNames[0]]);
                     sheetSelector.style.display = 'none';
                 } else {
-                    // 如果有多个工作表，显示选择器
                     sheetSelector.style.display = 'flex';
                     sheetSelect.innerHTML = '';
                     
@@ -1625,17 +2305,14 @@
                         sheetSelect.appendChild(option);
                     });
                     
-                    // 显示第一个工作表
                     displaySheet(workbook.Sheets[sheetNames[0]]);
                     
-                    // 切换工作表事件
                     sheetSelect.addEventListener('change', function() {
                         currentSortColumn = null;
                         currentSortDirection = null;
                         selectedRows.clear();
                         updateSelectionInfo();
                         displaySheet(workbook.Sheets[this.value]);
-                        // 切换工作表后焦点移到表格
                         setTimeout(() => {
                             tableWrapper.focus();
                         }, 100);
@@ -1643,9 +2320,8 @@
                 }
             }
             
-            // 显示工作表内容
+            // 顯示工作表內容
             function displaySheet(sheet) {
-                // 将Excel数据转换为JSON
                 const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
                 currentSheetData = jsonData;
                 
@@ -1654,72 +2330,63 @@
                     return;
                 }
                 
-                // 初始化当前显示数据
                 currentDisplayData = jsonData.slice(1);
+                originalDataRows = jsonData.slice(1);
                 
-                // 创建表格
                 const table = document.createElement('table');
                 
-                // 创建表头
                 const thead = document.createElement('thead');
                 const headerRow = document.createElement('tr');
                 
-                // 添加选择框列的表头
                 const selectHeader = document.createElement('th');
                 selectHeader.innerHTML = '<input type="checkbox" class="select-checkbox" id="selectAllHeader">';
                 headerRow.appendChild(selectHeader);
                 
-                // 表头全选功能
-                selectHeader.querySelector('#selectAllHeader').addEventListener('change', function(e) {
-                    e.stopPropagation();
-                    const checkboxes = tableContainer.querySelectorAll('.select-checkbox');
-                    checkboxes.forEach(checkbox => {
-                        if (checkbox !== this) {
-                            checkbox.checked = this.checked;
-                            const rowIndex = parseInt(checkbox.dataset.rowIndex);
-                            if (this.checked) {
-                                selectedRows.add(rowIndex);
-                            } else {
-                                selectedRows.delete(rowIndex);
-                            }
-                        }
-                    });
-                    updateSelectionInfo();
-                    updateRowSelectionStyles();
-                });
+                setTimeout(() => {
+                    const selectAllHeader = document.getElementById('selectAllHeader');
+                    if (selectAllHeader) {
+                        selectAllHeader.addEventListener('change', function(e) {
+                            e.stopPropagation();
+                            const checkboxes = tableContainer.querySelectorAll('.select-checkbox:not(#selectAllHeader)');
+                            checkboxes.forEach(checkbox => {
+                                checkbox.checked = this.checked;
+                                const rowIndex = parseInt(checkbox.dataset.rowIndex);
+                                if (this.checked) {
+                                    selectedRows.add(rowIndex);
+                                } else {
+                                    selectedRows.delete(rowIndex);
+                                }
+                            });
+                            updateSelectionInfo();
+                            updateRowSelectionStyles();
+                        });
+                    }
+                }, 100);
                 
-                // 使用第一行作为表头
                 const headers = jsonData[0];
                 headers.forEach((header, index) => {
                     const th = document.createElement('th');
-                    th.title = header || ''; // 添加title屬性以便懸停顯示完整內容
+                    th.title = header || '';
                     
-                    // 所有列都添加排序功能（包括第二列）
                     th.innerHTML = `
-                        <div class="sortable">
-                            <div class="header-content">
-                                ${header || ''}
-                                <div class="sort-icons">
-                                    <div class="sort-icon sort-up" id="sortUp-${index}"></div>
-                                    <div class="sort-icon sort-down" id="sortDown-${index}"></div>
-                                </div>
+                        <div class="header-content">
+                            <span>${header || ''}</span>
+                            <div class="sort-icons">
+                                <div class="sort-icon sort-up" data-sort="up" data-column="${index}"></div>
+                                <div class="sort-icon sort-down" data-sort="down" data-column="${index}"></div>
                             </div>
                         </div>
                     `;
                     
-                    // 点击表头排序
                     th.addEventListener('click', function(e) {
                         let sortDirection;
+                        const target = e.target;
                         
-                        // 如果点击的是排序图标
-                        if (e.target.classList.contains('sort-icon')) {
-                            if (e.target.classList.contains('sort-up')) {
-                                sortDirection = 'desc';
-                            } else if (e.target.classList.contains('sort-down')) {
-                                sortDirection = 'asc';
-                            }
+                        if (target.classList.contains('sort-up')) {
+                            sortDirection = 'desc';
+                        } else if (target.classList.contains('sort-down')) {
+                            sortDirection = 'asc';
                         } else {
-                            // 点击表头其他区域，切换排序方式
                             if (currentSortColumn === index) {
                                 sortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
                             } else {
@@ -1727,7 +2394,9 @@
                             }
                         }
                         
-                        sortTable(index, sortDirection);
+                        sortData(index, sortDirection);
+                        renderTable(currentDisplayData);
+                        updateSortIcons(index, sortDirection);
                     });
                     
                     headerRow.appendChild(th);
@@ -1736,159 +2405,28 @@
                 thead.appendChild(headerRow);
                 table.appendChild(thead);
                 
-                // 创建表格主体
                 const tbody = document.createElement('tbody');
-                
-                // 从第二行开始添加数据
-                for (let i = 1; i < jsonData.length; i++) {
-                    const row = document.createElement('tr');
-                    const rowData = jsonData[i];
-                    
-                    // 添加选择框
-                    const selectCell = document.createElement('td');
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'select-checkbox';
-                    checkbox.dataset.rowIndex = i - 1;
-                    checkbox.addEventListener('change', function() {
-                        const rowIndex = parseInt(this.dataset.rowIndex);
-                        if (this.checked) {
-                            selectedRows.add(rowIndex);
-                        } else {
-                            selectedRows.delete(rowIndex);
-                        }
-                        updateSelectionInfo();
-                        updateRowSelectionStyles();
-                        
-                        // 更新全选头部的状态
-                        const allCheckboxes = tableContainer.querySelectorAll('.select-checkbox:not(#selectAllHeader)');
-                        const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
-                        const selectAllHeader = document.getElementById('selectAllHeader');
-                        if (selectAllHeader) {
-                            selectAllHeader.checked = allChecked;
-                            selectAllHeader.indeterminate = !allChecked && selectedRows.size > 0;
-                        }
-                    });
-                    selectCell.appendChild(checkbox);
-                    row.appendChild(selectCell);
-                    
-                    // 确保每行的单元格数量与表头一致
-                    for (let j = 0; j < headers.length; j++) {
-                        const td = document.createElement('td');
-                        td.textContent = rowData[j] || '';
-                        td.title = rowData[j] || ''; // 添加title屬性以便懸停顯示完整內容
-                        row.appendChild(td);
-                    }
-                    
-                    tbody.appendChild(row);
-                }
-                
                 table.appendChild(tbody);
+                
                 tableContainer.innerHTML = '';
                 tableContainer.appendChild(table);
                 
-                // 提取欄位值並建立篩選選項
+                renderTable(currentDisplayData);
                 extractFilterValues();
                 
-                // 强制触发重排以确保滚动条显示
                 setTimeout(() => {
                     tableWrapper.scrollTop = 0;
                     tableWrapper.scrollLeft = 0;
-                    // 触发滚动事件
-                    tableWrapper.dispatchEvent(new Event('scroll'));
                 }, 100);
                 
-                // 如果有之前的排序状态，重新应用
                 if (currentSortColumn !== null && currentSortDirection !== null) {
-                    sortTable(currentSortColumn, currentSortDirection);
+                    sortData(currentSortColumn, currentSortDirection);
+                    renderTable(currentDisplayData);
+                    updateSortIcons(currentSortColumn, currentSortDirection);
                 }
             }
             
-            // 排序表格 - 修復：排序時保持篩選狀態
-            function sortTable(columnIndex, direction) {
-                if (!currentSheetData || currentSheetData.length < 2) return;
-                
-                const headers = currentSheetData[0];
-                
-                // 對當前顯示的數據進行排序，而不是原始數據
-                const dataRows = [...currentDisplayData];
-                
-                // 排序数据
-                dataRows.sort((a, b) => {
-                    let valueA = a[columnIndex];
-                    let valueB = b[columnIndex];
-                    
-                    // 尝试转换为数字进行比较
-                    const numA = parseFloat(valueA);
-                    const numB = parseFloat(valueB);
-                    
-                    if (!isNaN(numA) && !isNaN(numB)) {
-                        valueA = numA;
-                        valueB = numB;
-                    } else {
-                        // 如果是文本，转换为小写进行比较
-                        valueA = String(valueA || '').toLowerCase();
-                        valueB = String(valueB || '').toLowerCase();
-                    }
-                    
-                    if (direction === 'asc') {
-                        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-                    } else {
-                        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
-                    }
-                });
-                
-                // 更新当前显示数据
-                currentDisplayData = dataRows;
-                currentSortColumn = columnIndex;
-                currentSortDirection = direction;
-                
-                // 重新显示表格
-                const table = tableContainer.querySelector('table');
-                const tbody = table.querySelector('tbody');
-                tbody.innerHTML = '';
-                
-                // 添加排序后的行
-                dataRows.forEach((rowData, index) => {
-                    const row = document.createElement('tr');
-                    
-                    // 添加选择框
-                    const selectCell = document.createElement('td');
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.className = 'select-checkbox';
-                    checkbox.dataset.rowIndex = index;
-                    checkbox.checked = selectedRows.has(index);
-                    checkbox.addEventListener('change', function() {
-                        const rowIndex = parseInt(this.dataset.rowIndex);
-                        if (this.checked) {
-                            selectedRows.add(rowIndex);
-                        } else {
-                            selectedRows.delete(rowIndex);
-                        }
-                        updateSelectionInfo();
-                        updateRowSelectionStyles();
-                    });
-                    selectCell.appendChild(checkbox);
-                    row.appendChild(selectCell);
-                    
-                    for (let j = 0; j < headers.length; j++) {
-                        const td = document.createElement('td');
-                        td.textContent = rowData[j] || '';
-                        td.title = rowData[j] || ''; // 添加title屬性以便懸停顯示完整內容
-                        row.appendChild(td);
-                    }
-                    
-                    tbody.appendChild(row);
-                });
-                
-                updateRowSelectionStyles();
-                
-                // 更新排序图标状态
-                updateSortIcons(columnIndex, direction);
-            }
-            
-            // 更新排序图标状态
+            // 更新排序圖標狀態
             function updateSortIcons(columnIndex, direction) {
                 const headers = tableContainer.querySelectorAll('th');
                 headers.forEach(header => {
@@ -1898,16 +2436,44 @@
                     });
                 });
                 
-                // 注意：这里需要+1，因为第一列是选择框列
                 const currentHeader = headers[columnIndex + 1];
                 if (currentHeader) {
                     if (direction === 'asc') {
-                        currentHeader.querySelector(`.sort-down`).classList.add('active');
+                        currentHeader.querySelector('.sort-down').classList.add('active');
                     } else {
-                        currentHeader.querySelector(`.sort-up`).classList.add('active');
+                        currentHeader.querySelector('.sort-up').classList.add('active');
                     }
                 }
             }
+            
+            // 響應式處理
+            function handleResize() {
+                const width = window.innerWidth;
+                
+                if (width <= 768) {
+                    document.querySelectorAll('.filter-option').forEach(opt => {
+                        opt.style.fontSize = '0.8rem';
+                        opt.style.padding = '4px 8px';
+                    });
+                    
+                    document.querySelector('.filter-actions').style.flexWrap = 'wrap';
+                } else {
+                    document.querySelectorAll('.filter-option').forEach(opt => {
+                        opt.style.fontSize = '0.85rem';
+                        opt.style.padding = '6px 10px';
+                    });
+                    
+                    document.querySelector('.filter-actions').style.flexWrap = 'nowrap';
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            
+            // 初始化完成提示
+            setTimeout(() => {
+                showShortcutHint('篩選功能已優化完成，可使用 Ctrl+F 快速開啟篩選面板');
+            }, 1000);
         });
     </script>
 </body>
